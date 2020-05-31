@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <title>Document</title>
+</head>
+<body>
+    <button type="button" id="show_item" disabled>Click me to load data</button>
+    <script>
+        window.onload = initAll;
+        var showButton;
+        function initAll() {
+            showButton = document.getElementById('show_item');
+            showButton.onclick = showItem;
+            }
+
+        function showItem() {
+            console.log('button pressed');
+            var req = new XMLHttpRequest();
+            var url = '/';
+            console.log(url);
+            var i=0;
+
+            req.onreadystatechange = function() {
+                if(this.readyState == 4 && this.status == 200){
+                    var data = eval(req.responseText);
+                    var finalHtml = '';
+                    div = document.getElementById('container');
+                    for(i=0; i<data.length; i++){
+                        finalHtml+= '<h2>'+data[i].title+'</h2><p>by author '+data[i].author+'</p>';
+                    }
+                    div.innerHTML = finalHtml;
+                    showButton.innerHTML = "button already pressed";
+                    showButton.style.disabled = 'true';
+
+                    }
+                }
+                req.open("GET", url, true);
+                req.send();
+            }
+    </script>
+
+    <div id="container">
+
+    </div>
+</body>
+</html>
